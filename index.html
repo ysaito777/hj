@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>走高跳の重回帰式</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        .container {
+            width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        p {
+            margin-bottom: 20px;
+        }
+
+        label {
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 8px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+
+        #difficulty {
+            margin-bottom: 20px;
+        }
+
+        #difficulty label {
+            margin-right: 10px;
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>走高跳の重回帰式</h2>
+        <p style="text-indent: 1em; text-justify: inter-ideograph">走高跳の目標設定をしましょう。身長と50m走タイムを入力し、「計算する」ボタンを押してください。</p>
+        <details style="margin-bottom: 1em;;">
+            <summary>
+                参考情報
+            </summary>
+            <p style="text-indent: 1em; text-justify: inter-ideograph">難易度【中】の回帰式は「目標記録（cm）=身長（cm）*0.5-50m走タイム（sec）*10+110（cm）」です。難易度に応じて末尾の110（cm）が±10されます。</p>
+            <p style="font-size: small;">文献：<a href="https://kokushikan.repo.nii.ac.jp/records/5317" target="_blank">藤田育郎・池田延行（2011）体育授業における目標設定の手法に関する研究: 小学校高学年の走り高跳びを対象として. 体育・スポーツ科学研究, 11, 35-39.</a></p>
+        </details>
+        
+        <form id="regressionForm">
+            <div>
+                <label for="height">身長（cm）：</label>
+                <input type="number" id="height" required>
+            </div>
+            <div>
+                <label for="time">50m走タイム（sec）：</label>
+                <input type="number" id="time" step="0.01" required>
+            </div>
+            <div id="difficulty">
+                <label>難易度：</label>
+                <label><input type="radio" name="difficulty" value="110" checked> 低</label>
+                <label><input type="radio" name="difficulty" value="115"> 中</label>
+                <label><input type="radio" name="difficulty" value="120"> 高</label>
+            </div>
+            <input type="submit" value="計算する">
+        </form>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        document.getElementById('regressionForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            var height = parseFloat(document.getElementById('height').value);
+            var time = parseFloat(document.getElementById('time').value);
+            var difficulty = parseFloat(document.querySelector('input[name="difficulty"]:checked').value);
+            var result = height * 0.5 - time * 10 + difficulty;
+            document.getElementById('result').innerText = "目標記録は " + result.toFixed(2) + " cmです。";
+        });
+    </script>
+</body>
+</html>
